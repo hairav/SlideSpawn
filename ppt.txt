@@ -1,0 +1,68 @@
+Face Recognition
+
+Easy for you to say, you don’t have to recognizes faces everyday.
+
+
+Expectations from a Face Recognition system
+Due to application in security area and being really close to user a FR system should be
+Fast (to deliver better user experience)
+Accurate (to avoid any security exceptions)
+
+How the majority of FR techniques work
+Preprocessing : During preprocessing face detection is done, then we try to transform the image into a meaningful set of features that enhance the special feature specific to the detected face and remove the features common to most of the faces, it is desirable to make our features independent of various hindrance like variable lighting conditions, variable pose(alignment) of the face, noise. Techniques like LDP, LBP (or some variant of it) are popular for feature extraction.
+
+
+Dimension reduction: An image could still have lot of features which may be irrelevant, may cause overfitting, may have high correlation between them. Dimension reduction techniques like PCA, LDA, Orthogonal LDA are employed to overcome this.
+Decision: Finally the features obtained are either directly compared by computing the euclidean distance, or some machine learning technique like adaboosting, Relevance Vector machine etc can be used to train and test the processed images for comparison.
+
+LBP-Ferns-Based Feature Extraction for Robust Facial Recognition 2016
+LBP-Ferns : This technique first uses the Local Binary pattern attempts to reduce the influence of intensity values and increase the influence of local gradient of the central points. 
+It does that by labelling the neighbouring pixel of a point to either 0 or 1 and hence returns the decimal number to the binary representation obtained.
+
+
+The Random ferns technique repeatedly selects two kernels (different window on the LBP result) of variable size s and computes the difference between the histograms of the LBP values of the kernels and return the values as a row of features(as shown in figure). 
+After repeatedly doing the previous step we obtain a large enough set of features to discriminately describe our image.
+
+
+Intuition behind LBP-Ferns
+We don’t directly take histograms returned after LBA and apply random ferns, thus take the difference between two local histograms because it increases the discriminatory features of an image.
+Example: Since two people may have more or less same nose but there is a less chance that they have a similar difference of eye and nose. Had we used just LBP we would have compared the noses in the two faces but after applying ferns we compare differences between two regions.
+
+OLDA
+After a large matrix of features is obtained we need to reduce the dimensionality of the features. Here we employ orthogonal linear discriminant analysis technique. An extension of classical LDA to singular data.
+Advantages:
+LBA-Ferns gives us a huge set of discriminating features.
+OLDA reduces the number of features and gives us even more descriptive set of features.
+With such good features in less number we have both better accuracy and less time taken.
+
+Evaluation of Relevance Vector Machine Classifier for a Real-time Face Recognition System 2017 [ICCE-Asia]
+Author has used Histogram of Oriented Gradient feature extraction technique, where he calculates the histogram(only 9 bins of 20 degree each) of gradients of different blocks.
+Advantage :
+Since 180 possible bins are divided into only 9 bins no of feature dimensions are reduced in preprocessing itself.
+Due to the use of gradients, lighting conditions, noise does not affect the features and unique features are highlighted.
+
+The first image shows the gradient values in a block.
+The next image takes up all the values and shrinks the number of bins into only 9 distinct value for the gradient.
+This reduces the number of features without the need of any dimension reduction algorithm and thus saves time
+
+Relevance vector machine: The author has reported that Half against half architecture give performance superior to One against all and Hierarchical tree architecture.
+Advantages: 
+No use of Dimension reduction very few features are returned after HOG.
+Faster preprocessing step.
+Disadvantages:
+Low accuracy compared to other papers.
+
+Face Recognition in Unconstrained Environment
+Since this paper concerns an unconstrained environment, author first find center coordinates of eyes using adaboost algorithm, using these he rotates and crops the image to first find the Region of Interest.
+Then the author compares Histogram equalization, LBP and LDP results.
+The classification is done first using PCA to reduce the dimensions and then simple euclidean distance is compared.
+
+LDP
+In LDP we find edges in 8 direction and use the some ‘k’ most significant values. We here have a lesser amount of possible bins in our histogram(since only k values are selected).
+This method is independent of any noise present in the image.
+The figure compares the result of various methods on CMU-PIE illumination database.
+
+Face Detection and Recognition for Smart Glasses 2015 [ISCE]
+This paper is focused on reducing the power consumption of the face detection and then recognition process to implement face recognition on the smart glass itself and not offloading the heavy computation on a high-end device.
+LBP based detection is utilized here first comparing the distance from recently used images. And if no match is found, whole database is searched for a match. If still the results are negative a new person is added.
+The algorithm is run of GPU of the device which significantly reduces the power and time consumption but increases the operating temperature of device to an impractical level.
