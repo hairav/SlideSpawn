@@ -27,7 +27,7 @@ def comm(a,b):
 
 def getXnY(testno,both = True):
     #this function calculates either X & Y or only X as a consequence of the boolean value of the variable "both".
-    Dataset_path = '../Dataset'
+    Dataset_path = '/home/bhavy/Dataset 2/Dataset'
     
     #opening files
     if both:
